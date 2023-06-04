@@ -33,16 +33,15 @@ struct SecondView: View {
     @State private var mealCount = ""
     @State private var responseFetched = false
     @State private var apiResponse = ""
+
     
-    let apiTok: String = "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"
     
-    
-    let api = ChatGPTAPI(apiKey: "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")
+    let api = ChatGPTAPI(apiKey: ProcessInfo.processInfo.environment["OPENAI_APIKEY"] ?? "")
     
     func apiFetch(protein: Int, carbs: Int, fats: Int, calories: Int, meals: Int, completion: @escaping (String) -> Void) {
         Task {
             do {
-                let response = try await api.sendMessage(text: "The user requires a meal plan that has total macros \(protein)g of protein, \(carbs)g of carbs and \(fats)g of fats. The total calories must be no more than \(calories) calories. The user would also like to split this into \(meals) different meals. Meet these specifications and do not deviate from the total macros or calories by more than 100 calories plus or minus. Do not give any commentary, as this is part of an app.")
+                let response = try await api.sendMessage(text: "The user requires a meal plan that has total macros \(protein)g of protein, \(carbs)g of carbs and \(fats)g of fats. The total calories must be no more than \(calories) calories. The user would also like to split this into \(meals) different meals. Meet these specifications and do not deviate from the total macros or calories by more than 100 calories plus or minus. Do not give any commentary, as this is part of an app. State the calories in each subingredient as well as the total macros of the meals.")
                 print(response)
                 completion(response)
             } catch {
